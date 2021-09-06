@@ -1,5 +1,7 @@
 export module raytracerlib.camera;
-import raytracerlib;
+import raytracerlib.helpers;
+import raytracerlib.vec3;
+import raytracerlib.ray;
 
 export class camera {
 public:

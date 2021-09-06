@@ -4,7 +4,6 @@
 #include <cmath>
 
 import raytracerlib;
-import raytracerlib.camera;
 
 color ray_color(const ray& r, const hittable& world) {
 	hit_record rec;
@@ -21,7 +20,7 @@ int main()
 	constexpr auto a_ratio{ 16. / 9. };
 	constexpr int img_width{ 400 };
 	constexpr int img_height{ static_cast<int>(img_width / a_ratio) };
-	constexpr auto samples_per_pixel{ 100 };
+	constexpr auto samples_per_pixel{ 10 };
 
 	hittable_list world;
 	world.add(std::make_unique<sphere>(point3{ 0, 0, -1 }, 0.5));
