@@ -12,3 +12,4 @@ export import raytracerlib.sphere;
 export import raytracerlib.hittable_list;
 export import raytracerlib.helpers;
 export import raytracerlib.camera;
+export import raytracerlib.material;

@@ -5,6 +5,7 @@ module;
 #include <concepts>
 #include <cassert>
 export module raytracerlib.vec3;
+import raytracerlib.helpers;
 using std::sqrt;
 export {
 	class vec3 {
@@ -44,6 +45,14 @@ export {
 		}
 		double const lenght() const {
 			return sqrt(lenght_squared());
+		}
+
+		inline static vec3 random() {
+			return { random_canonical(),random_canonical(), random_canonical() };
+		}
+
+		inline static vec3 random(double min, double max) {
+			return { random_double(min,max),random_double(min,max),random_double(min,max) };
 		}
 	};
 	using point3 = vec3; // 3D point
@@ -91,5 +100,23 @@ export {
 
 	inline vec3 unit_vector(const vec3& v) noexcept {
 		return v / v.lenght();
+	}
+	vec3 random_in_unit_sphere() {
+		while (true) {
+			const auto p{ vec3::random(-1,1) };
+			if (p.lenght_squared() >= 1) continue;
+			return p;
+		}
+	}
+	vec3 random_unit_vector() {
+		return unit_vector(random_in_unit_sphere());
+	}
+	vec3 random_in_hemisphere(const vec3& normal) {
+		const vec3 in_unit_sphere{ random_in_unit_sphere() };
+		if (dot(in_unit_sphere, normal) > 0.)
+		{
+			return in_unit_sphere;
+		}
+		return -in_unit_sphere;
 	}
 }

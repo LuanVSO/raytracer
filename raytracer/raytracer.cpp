@@ -5,14 +5,21 @@
 
 import raytracerlib;
 
-color ray_color(const ray& r, const hittable& world) {
+color ray_color(const ray& r, const hittable& world, int depth) {
 	hit_record rec;
-	if (world.hit(r, 0, infinity, rec)) {
-		return .5 * (rec.normal + color{ 1,1,1 });
+
+	// If we've exceeded the ray bounce limit, no more light is gathered.
+	if (depth <= 0)
+		return {};
+
+	if (world.hit(r, 0.00001, infinity, rec)) {
+		point3 target = rec.p + rec.normal + random_in_hemisphere(rec.normal);
+		return 0.5 * ray_color(ray(rec.p, target - rec.p), world, depth - 1);
 	}
-	const vec3 unit_direction{ unit_vector(r.direction()) };
-	const auto t{ .5 * (unit_direction.y() + 1.0) };
-	return (1. - t) * color { 1., 1., 1. } + t * color{ .5,.7,1. };
+
+	vec3 unit_direction = unit_vector(r.direction());
+	auto t = 0.5 * (unit_direction.y() + 1.0);
+	return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
 }
 
 int main()
@@ -20,7 +27,8 @@ int main()
 	constexpr auto a_ratio{ 16. / 9. };
 	constexpr int img_width{ 400 };
 	constexpr int img_height{ static_cast<int>(img_width / a_ratio) };
-	constexpr auto samples_per_pixel{ 10 };
+	constexpr auto samples_per_pixel{ 100 };
+	constexpr auto max_depth{ 50 };
 
 	hittable_list world;
 	world.add(std::make_unique<sphere>(point3{ 0, 0, -1 }, 0.5));
@@ -44,7 +52,7 @@ int main()
 				const auto u{ (i + random_canonical()) / (img_width - 1) };
 				const auto v{ (j + random_canonical()) / (img_height - 1) };
 				ray r = cam.get_ray(u, v);
-				pixel_color += ray_color(r, world);
+				pixel_color += ray_color(r, world, max_depth);
 			}
 			write_color(std::cout, pixel_color, samples_per_pixel);
 		}
