@@ -24,5 +24,8 @@
     <ClCompile Include="ray.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hittable.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,10 +1,10 @@
 export module ray;
-export import vec3;
-export namespace lvs {
+import vec3;
+export {
 	class ray {
 	public:
-		constexpr ray(){}
-		constexpr ray(const point3& origin, const vec3& direction) : orig{ origin }, dir{direction} {}
+		constexpr ray() {}
+		constexpr ray(const point3& origin, const vec3& direction) : orig{ origin }, dir{ direction } {}
 
 		constexpr point3 origin() const { return orig; }
 		constexpr vec3 direction() const { return dir; }
@@ -16,5 +16,5 @@ export namespace lvs {
 		point3 orig;
 		vec3 dir;
 	};
-	
+
 }

@@ -6,7 +6,7 @@ module;
 #include <cassert>
 export module vec3;
 using std::sqrt;
-export namespace lvs {
+export {
 	class vec3 {
 		double e[3];
 	public:
