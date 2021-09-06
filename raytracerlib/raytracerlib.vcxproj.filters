@@ -27,5 +27,17 @@
     <ClCompile Include="hittable.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sphere.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hittable_list.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="raytracerlib.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
-export module ray;
-import vec3;
+export module raytracerlib.ray;
+import raytracerlib.vec3;
 export {
 	class ray {
 	public:

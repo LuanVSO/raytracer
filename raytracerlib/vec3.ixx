@@ -4,104 +4,92 @@ module;
 #include <cstdint>
 #include <concepts>
 #include <cassert>
-export module vec3;
+export module raytracerlib.vec3;
 using std::sqrt;
 export {
 	class vec3 {
 		double e[3];
 	public:
-		constexpr vec3() :e{ 0,0,0 } {}
-		constexpr vec3(double e0, double e1, double e2) : e{ e0,e1,e2 } {}
+		constexpr vec3() noexcept :e{ 0,0,0 } {}
+		constexpr vec3(double e0, double e1, double e2) noexcept : e{ e0,e1,e2 } {}
 
-		constexpr const inline double x() const { return e[0]; }
-		constexpr const inline double y() const { return e[1]; }
-		constexpr const inline double z() const { return e[2]; }
+		constexpr const inline double x() const noexcept { return e[0]; }
+		constexpr const inline double y() const noexcept { return e[1]; }
+		constexpr const inline double z() const noexcept { return e[2]; }
 
-		constexpr const vec3 operator~() const { return vec3(-e[0], -e[1], -e[2]); }
-		constexpr const inline double operator[](uint8_t i) const { assert(i < 3); return e[i]; }
-		constexpr inline double& operator[](uint8_t i) { assert(i < 3); return e[i]; }
+		constexpr vec3 operator-() const noexcept { return vec3(-e[0], -e[1], -e[2]); }
+		constexpr const inline double operator[](uint8_t i) const noexcept { assert(i < 3); return e[i]; }
+		constexpr inline double& operator[](uint8_t i) noexcept { assert(i < 3); return e[i]; }
 
-		constexpr vec3& operator+=(const vec3& v) {
+		constexpr inline vec3& operator+=(const vec3& v) noexcept {
 			e[0] += v[0];
 			e[1] += v[1];
 			e[2] += v[2];
 			return *this;
 		}
 
-		constexpr vec3& operator*=(const double t) {
+		constexpr inline vec3& operator*=(const double t) noexcept {
 			e[0] *= t;
 			e[1] *= t;
 			e[2] *= t;
 			return *this;
 		}
 
-		constexpr vec3& operator/=(const double t) {
+		constexpr inline vec3& operator/=(const double t) noexcept {
 			return *this *= 1 / t;
 		}
 
-		constexpr const double length_squared() const {
+		constexpr const inline double lenght_squared() const noexcept {
 			return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
 		}
 		double const lenght() const {
-			return sqrt(length_squared());
+			return sqrt(lenght_squared());
 		}
 	};
-	typedef vec3 point3;// 3D point
-	typedef vec3 color;// RGB Color
+	using point3 = vec3; // 3D point
+	using color = vec3;// RGB Color
 
-	template<typename T>
-	concept vec = std::same_as<T, vec3> || std::same_as<T, point3> || std::same_as<T, color>;
-
-	inline std::ostream& operator<<(std::ostream& os, const vec auto& v) {
+	inline std::ostream& operator<<(std::ostream& os, const  vec3& v) {
 		return os << v[0] << ' ' << v[1] << ' ' << v[2];
 	}
 
-	template<vec V>
-	constexpr inline V operator+(const V& u, const V& v) {
+	constexpr inline vec3 operator+(const vec3& u, const vec3& v) noexcept {
 		return { u[0] + v[0],u[1] + v[1] ,u[2] + v[2] };
 	}
 
-	template <vec V>
-	constexpr inline V operator-(const V& u, const V& v) {
+	constexpr inline vec3 operator-(const vec3& u, const vec3& v) noexcept {
 		return { u[0] - v[0] ,u[1] - v[1] ,u[2] - v[2] };
 	}
 
-	template <vec V>
-	constexpr inline V operator*(const V& u, const V& v) {
+	constexpr inline vec3 operator*(const vec3& u, const vec3& v) noexcept {
 		return { u[0] * v[0] ,u[1] * v[1] ,u[2] * v[2] };
 	}
 
-	template <vec V>
-	constexpr inline V operator*(double t, const V& v) {
+	constexpr inline vec3 operator*(double t, const vec3& v) noexcept {
 		return { t * v[0] ,t * v[1] ,t * v[2] };
 	}
 
-	template <vec V>
-	constexpr inline V operator*(const V& v, double t) {
+	constexpr inline vec3 operator*(const vec3& v, double t) noexcept {
 		return t * v;
 	}
 
-	template <vec V>
-	constexpr inline V operator/(const V& v, double t) {
+	constexpr inline vec3 operator/(const vec3& v, double t) noexcept {
 		return (1 / t) * v;
 	}
 
-	template <vec V>
-	constexpr inline double dot(const V& u, const V& v) {
+	constexpr inline double dot(const vec3& u, const vec3& v) noexcept {
 		return u[0] * v[0]
 			+ u[1] * v[1]
 			+ u[2] * v[2];
 	}
 
-	template <vec V>
-	constexpr inline V cross(const V& u, const V& v) {
+	constexpr inline vec3 cross(const vec3& u, const vec3& v) noexcept {
 		return { u[1] * v[2] - u[2] * v[1],
 				u[2] * v[0] - u[0] * v[2],
 				u[0] * v[1] - u[1] * v[0] };
 	}
 
-	template<vec V>
-	inline V unit_vector(const V& v) {
+	inline vec3 unit_vector(const vec3& v) noexcept {
 		return v / v.lenght();
 	}
 }

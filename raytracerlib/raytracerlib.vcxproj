@@ -160,9 +160,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="camera.ixx" />
     <ClCompile Include="color.ixx" />
     <ClCompile Include="hittable.ixx" />
+    <ClCompile Include="hittable_list.ixx" />
     <ClCompile Include="ray.ixx" />
+    <ClCompile Include="raytracerlib.ixx" />
+    <ClCompile Include="sphere.ixx" />
     <ClCompile Include="vec3.ixx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
