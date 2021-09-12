@@ -7,9 +7,9 @@ import glm.vec3;
 
 export namespace rtl {
 	void write_color(std::ostream& os, const glm::color& pixel_color, int samples_per_pixel) {
-		auto r = pixel_color.r;
-		auto g = pixel_color.g;
-		auto b = pixel_color.b;
+		double r = pixel_color.r;
+		double g = pixel_color.g;
+		double b = pixel_color.b;
 
 		// Divide the color by the number of samples and gamma-correct for gamma=2.0.
 		const auto scale{ 1. / samples_per_pixel };
