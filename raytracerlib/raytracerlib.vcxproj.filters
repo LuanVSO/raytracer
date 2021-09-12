@@ -42,5 +42,8 @@
     <ClCompile Include="material.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="glm.vec3.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

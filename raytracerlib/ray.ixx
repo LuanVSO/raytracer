@@ -1,20 +1,20 @@
 export module raytracerlib.ray;
-import raytracerlib.vec3;
-export {
+import glm.vec3;
+export namespace rtl {
 	class ray {
 	public:
-		constexpr ray() {}
-		constexpr ray(const point3& origin, const vec3& direction) : orig{ origin }, dir{ direction } {}
+		ray() {}
+		ray(const glm::point3& origin, const glm::dvec3& direction) : orig{ origin }, dir{ direction } {}
 
-		constexpr point3 origin() const { return orig; }
-		constexpr vec3 direction() const { return dir; }
+		glm::point3 origin() const { return orig; }
+		glm::dvec3 direction() const { return dir; }
 
-		constexpr point3 at(double t) const {
+		glm::point3 at(double t) const {
 			return orig + t * dir;
 		}
 	private:
-		point3 orig;
-		vec3 dir;
+		glm::point3 orig;
+		glm::dvec3 dir;
 	};
 
 }
