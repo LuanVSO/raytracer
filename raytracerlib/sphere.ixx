@@ -1,7 +1,9 @@
 module;
 #include <cmath>
+#include <memory>
 export module raytracerlib.sphere;
 import raytracerlib.hittable;
+import raytracerlib.material;
 import glm.vec3;
 
 
@@ -9,7 +11,7 @@ export namespace rtl {
 	class sphere : public hittable {
 	public:
 		sphere() noexcept {}
-		sphere(glm::point3 cen, double rad) noexcept :center{ cen }, radius{ rad } {}
+		sphere(glm::point3 cen, double rad, std::shared_ptr<material> m) noexcept :center{ cen }, radius{ rad }, mat_ptr{ m } {}
 
 		const bool hit(const ray& r, double t_min, double t_max, hit_record& rec) const noexcept override final {
 			const auto oc{ r.origin() - center };
@@ -30,11 +32,13 @@ export namespace rtl {
 			rec.p = r.at(rec.t);
 			const auto outward_normal = (rec.p - center) / radius;
 			rec.set_face_normal(r, outward_normal);
+			rec.mat_ptr = mat_ptr;
 
 			return true;
 		}
 
 		glm::point3 center;
 		double radius;
+		std::shared_ptr<material> mat_ptr;
 	};
 }

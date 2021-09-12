@@ -13,8 +13,12 @@ glm::color ray_color(const rtl::ray& r, const rtl::hittable& world, int depth) {
 		return {};
 
 	if (world.hit(r, 0.00001, infinity, rec)) {
-		glm::point3 target = rec.p + rec.normal + glm::random_in_hemisphere(rec.normal);
-		return 0.5 * ray_color(rtl::ray(rec.p, target - rec.p), world, depth - 1);
+		rtl::ray scattered;
+		glm::color attenuation;
+		if (rec.mat_ptr->scatter(r, rec, attenuation, scattered)) {
+			return attenuation * ray_color(scattered, world, depth - 1);
+		}
+		return { 0,0,0 };
 	}
 
 	glm::dvec3 unit_direction = glm::normalize(r.direction());
@@ -31,9 +35,15 @@ int main()
 	constexpr auto max_depth{ 50 };
 
 	rtl::hittable_list world;
-	world.add(std::make_unique<rtl::sphere>(glm::point3{ 0, 0, -1 }, 0.5));
-	world.add(std::make_unique<rtl::sphere>(glm::point3{ 0, -100.5, -1 }, 100));
+	auto material_ground = std::make_shared<rtl::lambertian>(glm::color(0.8, 0.8, 0.0));
+	auto material_center = std::make_shared<rtl::lambertian>(glm::color(0.7, 0.3, 0.3));
+	auto material_left = std::make_shared<rtl::metal>(glm::color(0.8, 0.8, 0.8),0.3);
+	auto material_right = std::make_shared<rtl::metal>(glm::color(0.8, 0.6, 0.2),1.0);
 
+	world.add(make_unique<rtl::sphere>(glm::point3(0.0, -100.5, -1.0), 100.0, material_ground));
+	world.add(make_unique<rtl::sphere>(glm::point3(0.0, 0.5, -1.0), 0.5, material_center));
+	world.add(make_unique<rtl::sphere>(glm::point3(-1.0, 0.0, -1.0), 0.5, material_left));
+	world.add(make_unique<rtl::sphere>(glm::point3(1.0, 0.0, -1.0), 0.5, material_right));
 
 	rtl::camera cam;
 

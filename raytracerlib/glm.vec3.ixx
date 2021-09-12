@@ -1,6 +1,7 @@
 module;
 #include <ostream>
 #include <iostream>
+#include <cmath>
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
 #include <glm/ext/quaternion_geometric.hpp>
@@ -16,6 +17,8 @@ export namespace glm {
 	using glm::dot;
 	using glm::normalize;
 	using glm::linearRand;
+	using glm::ballRand;
+	using glm::reflect;
 
 	using glm::operator%, glm::operator*, glm::operator+, glm::operator-, glm::operator/,
 		glm::operator&, glm::operator&&, glm::operator<<, glm::operator==, glm::operator>>,
@@ -39,5 +42,10 @@ export namespace glm {
 			return in_unit_sphere;
 		}
 		return -in_unit_sphere;
+	}
+
+	bool near_zero(const dvec3& a) {
+		constexpr auto s{ 1e-8 };
+		return (std::fabs(a.x) < s) && (std::fabs(a.y) < s) && (std::fabs(a.z) < s);
 	}
 }

@@ -1,18 +1,11 @@
+module;
+#include <memory>
 export module raytracerlib.hittable;
 import raytracerlib.ray;
 import glm.vec3;
+export import raytracerlib.material;
 
 export namespace rtl {
-	struct hit_record {
-		glm::point3 p;
-		glm::dvec3 normal;
-		double t;
-		bool front_face;
-		inline void set_face_normal(const ray& r, const glm::dvec3& outward_normal) noexcept {
-			front_face = glm::dot(r.direction(),  outward_normal) < 0;
-			normal = front_face ? outward_normal : -outward_normal;
-		}
-	};
 
 	class hittable {
 	public:
