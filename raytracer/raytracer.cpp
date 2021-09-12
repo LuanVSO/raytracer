@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <ios>
 #include <format>
 #include <memory>
 #include <cmath>
@@ -47,7 +49,10 @@ int main()
 
 	rtl::camera cam;
 
-	std::cout << std::format("P3\n{} {}\n255\n", img_width, img_height);
+	std::ofstream file;
+	file.open("./render.ppm", std::ios::out | std::ios::trunc);
+
+	file << std::format("P3\n{} {}\n255\n", img_width, img_height);
 	for (int j = img_height - 1; j >= 0; j--)
 	{
 		std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
@@ -60,8 +65,9 @@ int main()
 				rtl::ray r = cam.get_ray(u, v);
 				pixel_color += ray_color(r, world, max_depth);
 			}
-			rtl::write_color(std::cout, pixel_color, samples_per_pixel);
+			rtl::write_color(file, pixel_color, samples_per_pixel);
 		}
 	}
 	std::cerr << "\nDone.\n";
+	file.close();
 }
